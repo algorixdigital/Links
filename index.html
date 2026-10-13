@@ -5,8 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#101010">
-  <meta name="description" content="Connect with us, follow us, and share your experience.">
-  <title>Connect With Us</title>
+  <meta name="description" content="Connect with Algorix Digital. Follow us and get in touch.">
+
+  <title>Algorix Digital | Connect With Us</title>
 
   <style>
     * {
@@ -32,18 +33,24 @@
       width: 100%;
       max-width: 420px;
       text-align: center;
+      margin: 0 auto;
     }
 
+    /* ALG0RIX DIGITAL LOGO */
     .logo {
-      width: 86px;
-      height: 86px;
-      margin: 0 auto 20px;
-      border: 1px solid #555;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: #202020;
-      font-size: 34px;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
     }
 
     h1 {
@@ -105,12 +112,31 @@
     }
 
     .footer a {
-      color: #cccccc;
+      color: #1680ff;
       text-decoration: none;
     }
 
     .footer a:hover {
       text-decoration: underline;
+    }
+
+    @media (max-width: 360px) {
+      body {
+        padding: 28px 14px;
+      }
+
+      .logo {
+        max-width: 250px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .link {
+        padding: 15px 12px;
+        font-size: 14px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -124,19 +150,21 @@
 <body>
   <main class="container">
 
-    <div class="logo" aria-hidden="true">⌁</div>
+    <!-- ALG0RIX DIGITAL LOGO -->
+    <div class="logo">
+      <img src="./logo.png" alt="Algorix Digital logo">
+    </div>
 
-    <!-- Change this to your business name -->
-    <h1>Your Business Name</h1>
+    <h1>Algorix Digital</h1>
 
     <p class="subtitle">
       Thanks for connecting with us.<br>
       Choose an option below to get started.
     </p>
 
-    <nav class="links" aria-label="Our social links">
+    <nav class="links" aria-label="Social media and contact links">
 
-      <!-- GOOGLE REVIEWS -->
+      <!-- GOOGLE REVIEWS: Replace with your direct review URL -->
       <a class="link"
          href="https://www.google.com/"
          target="_blank"
@@ -146,7 +174,7 @@
         <span class="arrow">↗</span>
       </a>
 
-      <!-- INSTAGRAM -->
+      <!-- INSTAGRAM: Replace with your profile URL -->
       <a class="link"
          href="https://www.instagram.com/"
          target="_blank"
@@ -156,7 +184,7 @@
         <span class="arrow">↗</span>
       </a>
 
-      <!-- WHATSAPP -->
+      <!-- WHATSAPP: Replace with your business number -->
       <a class="link"
          href="https://wa.me/923001234567"
          target="_blank"
@@ -166,7 +194,7 @@
         <span class="arrow">↗</span>
       </a>
 
-      <!-- FACEBOOK -->
+      <!-- FACEBOOK: Replace with your page URL -->
       <a class="link"
          href="https://www.facebook.com/"
          target="_blank"
