@@ -132,6 +132,131 @@
   @media (max-width:520px){.o1{width:90px;height:90px} .o3{width:130px;height:130px}}
   @media (prefers-reduced-motion:reduce){.orb i{animation:none}}
 
+
+  /* ---------- layout + catalog (right side of screen) ---------- */
+  .layout{position:relative; z-index:1; width:100%; max-width:420px; margin:0 auto}
+  .layout .container{z-index:auto}
+
+  .catalog{
+    position:fixed; top:0; right:0; bottom:0; z-index:20;
+    width:min(88vw,340px); padding:28px 20px; overflow-y:auto;
+    display:flex; flex-direction:column; justify-content:center; gap:14px; text-align:left;
+    background:rgba(6,24,43,.92);
+    -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+    border-left:1px solid var(--line);
+    transform:translateX(105%); transition:transform .35s ease;
+  }
+  .catalog.open{transform:none}
+  .catalog h2{font-size:20px; font-weight:800; letter-spacing:-.4px; margin:0}
+  .catalog > p{margin:0 0 4px; color:var(--muted); font-size:13px}
+  .cat-close{
+    position:absolute; top:12px; right:14px; width:34px; height:34px; border-radius:10px;
+    border:1px solid var(--line); background:rgba(255,255,255,.08); color:var(--text);
+    font-size:18px; cursor:pointer; line-height:1;
+  }
+  .cat-toggle{
+    position:fixed; right:0; top:50%; z-index:19; transform:translateY(-50%);
+    writing-mode:vertical-rl; padding:16px 10px; border:0; cursor:pointer;
+    border-radius:14px 0 0 14px; font:800 14px "Plus Jakarta Sans",Arial,sans-serif; letter-spacing:.5px;
+    color:var(--ink); background:linear-gradient(135deg,#FFD982,var(--gold));
+    box-shadow:-6px 8px 24px rgba(255,194,75,.35);
+  }
+  .cat-backdrop{position:fixed; inset:0; z-index:15; background:rgba(0,0,0,.5); opacity:0; pointer-events:none; transition:opacity .3s}
+  .cat-backdrop.open{opacity:1; pointer-events:auto}
+
+  .cat{
+    display:block; text-decoration:none; color:var(--text);
+    padding:20px; border-radius:20px;
+    background:linear-gradient(160deg,rgba(255,255,255,.11),rgba(255,255,255,.04));
+    border:1px solid var(--line);
+    box-shadow:0 12px 30px rgba(0,0,0,.3);
+  }
+  .cat.tilt.active{box-shadow:0 26px 48px rgba(0,0,0,.5)}
+  .cat-icon{width:48px; height:48px; border-radius:14px; display:grid; place-items:center; margin-bottom:14px;
+    background:linear-gradient(135deg,var(--blue),#1D5FD1); box-shadow:0 8px 20px rgba(61,139,255,.4)}
+  .cat:nth-of-type(2) .cat-icon{background:linear-gradient(135deg,#FFD982,#FFAE2B); box-shadow:0 8px 20px rgba(255,194,75,.35)}
+  .cat:nth-of-type(3) .cat-icon{background:linear-gradient(135deg,#9B6BFF,#6A35D8); box-shadow:0 8px 20px rgba(123,63,228,.4)}
+  .cat-icon svg{width:26px; height:26px; fill:none; stroke:#fff; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+  .cat:nth-of-type(2) .cat-icon svg{stroke:var(--ink)}
+  .cat h3{margin:0 0 6px; font-size:17px; font-weight:800}
+  .cat p{margin:0 0 14px; font-size:13.5px; line-height:1.6; color:var(--muted)}
+  .cat-cta{font-size:13.5px; font-weight:700; color:var(--gold)}
+
+  /* wide screens: catalog is always visible, pinned to the right edge */
+  @media (min-width:1100px){
+    .catalog{
+      right:28px; width:310px; padding:0; background:none; border:0;
+      -webkit-backdrop-filter:none; backdrop-filter:none; transform:none; overflow-y:auto;
+    }
+    .cat{-webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px)}
+    .cat-toggle,.cat-close,.cat-backdrop{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){.catalog{transition:none}}
+
+  /* ---------- AI / robotics background ---------- */
+  #ai-bg{position:fixed; inset:0; z-index:0; pointer-events:none}
+  .bot-scene{
+    position:fixed; left:5vw; top:50%; width:140px; height:140px; margin-top:-70px;
+    perspective:800px; z-index:0; pointer-events:none;
+  }
+  .bot-float{width:100%; height:100%; transform-style:preserve-3d; animation:bob 4.5s ease-in-out infinite alternate}
+  @keyframes bob{from{transform:translateY(-12px)} to{transform:translateY(12px)}}
+  .bot{width:100%; height:100%; position:relative; transform-style:preserve-3d; transform:rotateX(-8deg) rotateY(20deg)}
+  .f{
+    position:absolute; inset:0; border-radius:22px; overflow:hidden;
+    background:
+      repeating-linear-gradient(90deg,transparent 0 17px,rgba(61,139,255,.10) 17px 18px),
+      linear-gradient(145deg,#33557f,#10294a 70%);
+    border:2px solid rgba(255,255,255,.2);
+    box-shadow:inset 0 0 30px rgba(61,139,255,.3);
+  }
+  .f.front{transform:translateZ(70px)}
+  .f.back{transform:rotateY(180deg) translateZ(70px); display:grid; place-items:center; font-weight:800; font-size:44px; color:rgba(95,176,255,.85); text-shadow:0 0 18px #3D8BFF}
+  .f.right{transform:rotateY(90deg) translateZ(70px)}
+  .f.left{transform:rotateY(-90deg) translateZ(70px)}
+  .f.top{transform:rotateX(90deg) translateZ(70px)}
+  .f.bottom{transform:rotateX(-90deg) translateZ(70px)}
+  .visor{
+    position:absolute; left:14px; right:14px; top:30px; height:52px; border-radius:16px;
+    background:#04101f; box-shadow:inset 0 0 14px rgba(61,139,255,.55);
+    display:flex; justify-content:space-around; align-items:center;
+  }
+  .eye{
+    width:21px; height:21px; border-radius:50%;
+    background:radial-gradient(circle,#fff 10%,#5fb0ff 45%,#1d5fd1 100%);
+    box-shadow:0 0 14px #3D8BFF; animation:blink 5s infinite;
+  }
+  @keyframes blink{0%,92%,100%{transform:scaleY(1)} 95%{transform:scaleY(.1)}}
+  .mouth{position:absolute; bottom:20px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:4px; height:18px}
+  .mouth i{width:7px; height:6px; border-radius:3px; background:var(--gold); box-shadow:0 0 8px rgba(255,194,75,.7); animation:eq 1.2s ease-in-out infinite}
+  .mouth i:nth-child(2){animation-delay:.15s} .mouth i:nth-child(3){animation-delay:.3s}
+  .mouth i:nth-child(4){animation-delay:.45s} .mouth i:nth-child(5){animation-delay:.6s}
+  @keyframes eq{0%,100%{height:5px} 50%{height:17px}}
+  .ear{position:absolute; top:46px; width:16px; height:48px; border-radius:8px; background:linear-gradient(#6a8cbc,#25456f); box-shadow:0 0 10px rgba(61,139,255,.4)}
+  .ear.l{left:-17px} .ear.r{right:-17px}
+  .ant{position:absolute; left:50%; top:-42px; width:4px; height:42px; margin-left:-2px; background:linear-gradient(#cfd9e6,#6f86a3)}
+  .ant.b{transform:rotateY(90deg)}
+  .ant.a::before{
+    content:""; position:absolute; top:-9px; left:50%; margin-left:-7px; width:14px; height:14px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#fff,var(--gold) 50%,#c77a00);
+    box-shadow:0 0 16px var(--gold); animation:ping 1.6s ease-in-out infinite;
+  }
+  @keyframes ping{50%{box-shadow:0 0 30px 6px var(--gold)}}
+  .ring{position:absolute; inset:-42px; border-radius:50%; border:1.5px solid rgba(95,176,255,.5)}
+  .ring::after{content:""; position:absolute; top:-5px; left:50%; margin-left:-5px; width:10px; height:10px; border-radius:50%; background:#5fb0ff; box-shadow:0 0 12px #5fb0ff}
+  .ring.r1{animation:rA 9s linear infinite}
+  .ring.r2{animation:rB 13s linear infinite reverse; inset:-62px; border-color:rgba(255,194,75,.45)}
+  .ring.r2::after{background:var(--gold); box-shadow:0 0 12px var(--gold)}
+  .ring.r3{animation:rC 17s linear infinite; inset:-24px; border-style:dashed; border-color:rgba(123,63,228,.6)}
+  @keyframes rA{from{transform:rotateX(72deg) rotateZ(0)} to{transform:rotateX(72deg) rotateZ(360deg)}}
+  @keyframes rB{from{transform:rotateY(72deg) rotateZ(0)} to{transform:rotateY(72deg) rotateZ(360deg)}}
+  @keyframes rC{from{transform:rotateX(35deg) rotateY(55deg) rotateZ(0)} to{transform:rotateX(35deg) rotateY(55deg) rotateZ(360deg)}}
+  .bot-glow{position:absolute; left:50%; bottom:-78px; width:150px; height:18px; margin-left:-75px; border-radius:50%;
+    background:radial-gradient(ellipse,rgba(61,139,255,.55),transparent 70%)}
+  @media (max-width:1099px){
+    .bot-scene{left:-4px; top:auto; bottom:6vh; margin-top:0; transform:scale(.55); transform-origin:left bottom; opacity:.5}
+  }
+
   a:focus-visible{outline:3px solid var(--blue); outline-offset:3px}
   @media (max-width:360px){h1{font-size:26px} .link{padding:11px 12px; font-size:14px}}
   @media (prefers-reduced-motion:reduce){
@@ -141,10 +266,29 @@
 </style>
 </head>
 <body>
+<canvas id="ai-bg" aria-hidden="true"></canvas>
+<div class="bot-scene" aria-hidden="true">
+  <div class="bot-float">
+    <div class="bot">
+      <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+      <div class="ant a"></div><div class="ant b"></div>
+      <div class="ear l"></div><div class="ear r"></div>
+      <div class="f front">
+        <div class="visor"><span class="eye"></span><span class="eye"></span></div>
+        <div class="mouth"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="f back">AI</div>
+      <div class="f right"></div><div class="f left"></div>
+      <div class="f top"></div><div class="f bottom"></div>
+    </div>
+    <div class="bot-glow"></div>
+  </div>
+</div>
 <div class="orbs" aria-hidden="true">
   <div class="orb o1"><i></i></div><div class="orb o2"><i></i></div>
   <div class="orb o3"><i></i></div><div class="orb o4"><i></i></div>
 </div>
+<div class="layout">
 <main class="container">
 
   <div class="logo-wrap tilt" data-tilt="18"><div class="logo"><div class="logo-inner">
@@ -198,6 +342,103 @@
   </p>
 
 </main>
+<aside class="catalog" id="catalog" aria-label="Our catalog">
+    <button class="cat-close" type="button" aria-label="Close catalog">&times;</button>
+    <h2>Our catalog</h2>
+    <p>Tap a box to ask about it.</p>
+    <a class="cat tilt" data-tilt="9" href="https://wa.me/923001234567?text=Hi%20Algorix%20Digital%2C%20I%27m%20interested%20in%20the%20NFC%20Review%20Plate." target="_blank" rel="noopener noreferrer">
+      <div class="cat-icon"><svg viewBox="0 0 24 24"><path d="M8.5 8.5a5 5 0 0 1 0 7M12 6a8.500 8.500 0 0 1 0 12M15.500 3.500a12 12 0 0 1 0 17"/></svg></div>
+      <h3>NFC Review Plate</h3>
+      <p>Customers tap their phone on the plate and land on your Google review page.</p>
+      <span class="cat-cta">Ask on WhatsApp</span>
+    </a>
+    <a class="cat tilt" data-tilt="9" href="https://wa.me/923001234567?text=Hi%20Algorix%20Digital%2C%20I%27m%20interested%20in%20the%20QR%20Review%20Stand." target="_blank" rel="noopener noreferrer">
+      <div class="cat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h3M20 17v4"/></svg></div>
+      <h3>QR Review Stand</h3>
+      <p>A printed QR stand for counters and tables that opens your review link when scanned.</p>
+      <span class="cat-cta">Ask on WhatsApp</span>
+    </a>
+    <a class="cat tilt" data-tilt="9" href="https://wa.me/923001234567?text=Hi%20Algorix%20Digital%2C%20I%27m%20interested%20in%20a%20Link%20Page%20Setup." target="_blank" rel="noopener noreferrer">
+      <div class="cat-icon"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+      <h3>Link Page Setup</h3>
+      <p>A page like this one with your logo, review link and social profiles.</p>
+      <span class="cat-cta">Ask on WhatsApp</span>
+    </a>
+  </aside>
+<button class="cat-toggle" type="button" aria-controls="catalog" aria-expanded="false">Catalog</button>
+<div class="cat-backdrop"></div>
+</div>
+
+<script>
+/* AI background: rotating 3D neural network with data pulses + a robot head that follows the pointer */
+(function(){
+  var cv=document.getElementById('ai-bg'), c=cv.getContext('2d'), bot=document.querySelector('.bot');
+  var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W,H,dpr,S,nodes=[],links=[],pulses=[],P=[],tx=0,ty=0,mx=0,my=0;
+  function size(){
+    dpr=Math.min(devicePixelRatio||1,2); W=innerWidth; H=innerHeight; S=Math.max(W,H)*.42;
+    cv.width=W*dpr; cv.height=H*dpr; c.setTransform(dpr,0,0,dpr,0,0);
+    var n=W<600?40:66; nodes=[]; links=[]; pulses=[];
+    for(var i=0;i<n;i++) nodes.push({x:Math.random()*2.4-1.2,y:Math.random()*2-1,z:Math.random()*2-1,g:Math.random()<.12});
+    for(var a=0;a<n;a++) for(var b=a+1;b<n;b++){
+      var dx=nodes[a].x-nodes[b].x, dy=nodes[a].y-nodes[b].y, dz=nodes[a].z-nodes[b].z;
+      if(dx*dx+dy*dy+dz*dz<.38) links.push([a,b]);
+    }
+  }
+  function frame(t){
+    mx+=(tx-mx)*.05; my+=(ty-my)*.05;
+    var ay=t*.00012+mx*.8, ax=my*.5+Math.sin(t*.0002)*.15;
+    var cy=Math.cos(ay), sy=Math.sin(ay), cx=Math.cos(ax), sx=Math.sin(ax);
+    c.clearRect(0,0,W,H);
+    for(var i=0;i<nodes.length;i++){
+      var n=nodes[i], x1=n.x*cy+n.z*sy, z1=-n.x*sy+n.z*cy, y1=n.y*cx-z1*sx, z2=n.y*sx+z1*cx, k=1.8/(1.8+z2);
+      P[i]={x:W/2+x1*k*S, y:H/2+y1*k*S, k:k};
+    }
+    c.lineWidth=1;
+    for(var l=0;l<links.length;l++){
+      var p=P[links[l][0]], q=P[links[l][1]], al=Math.max(.04,Math.min(.3,(p.k+q.k-1.2)*.22));
+      c.strokeStyle='rgba(110,165,255,'+al+')'; c.beginPath(); c.moveTo(p.x,p.y); c.lineTo(q.x,q.y); c.stroke();
+    }
+    for(var j=0;j<nodes.length;j++){
+      var d=P[j]; c.fillStyle=nodes[j].g?'rgba(255,194,75,'+(.45+.4*d.k)+')':'rgba(95,176,255,'+(.4+.45*d.k)+')';
+      c.beginPath(); c.arc(d.x,d.y,1.6+2.4*d.k,0,6.283); c.fill();
+    }
+    if(!still){
+      if(pulses.length<10 && links.length && Math.random()<.06) pulses.push({l:links[(Math.random()*links.length)|0],t:0});
+      for(var m=pulses.length-1;m>=0;m--){
+        var u=pulses[m]; u.t+=.014; if(u.t>=1){pulses.splice(m,1);continue;}
+        var a=P[u.l[0]], b=P[u.l[1]], px=a.x+(b.x-a.x)*u.t, py=a.y+(b.y-a.y)*u.t;
+        c.fillStyle='rgba(255,194,75,.25)'; c.beginPath(); c.arc(px,py,7,0,6.283); c.fill();
+        c.fillStyle='#FFC24B'; c.beginPath(); c.arc(px,py,2.6,0,6.283); c.fill();
+      }
+      /* robot head turns toward the pointer, with a gentle idle sway */
+      bot.style.transform='rotateX('+(-my*45-6+Math.cos(t*.0008)*5)+'deg) rotateY('+(mx*80+Math.sin(t*.0006)*12)+'deg)';
+      requestAnimationFrame(frame);
+    }
+  }
+  size(); requestAnimationFrame(frame);
+  addEventListener('resize',function(){ size(); if(still) frame(0); });
+  if(!still){
+    addEventListener('pointermove',function(e){ tx=e.clientX/innerWidth-.5; ty=e.clientY/innerHeight-.5; });
+    addEventListener('deviceorientation',function(e){
+      if(e.gamma==null) return; tx=Math.max(-1,Math.min(1,e.gamma/40))/2; ty=Math.max(-1,Math.min(1,(e.beta-45)/40))/2;
+    });
+  }
+})();
+</script>
+<script>
+(function(){
+  var box=document.getElementById('catalog'),
+      tog=document.querySelector('.cat-toggle'),
+      bd=document.querySelector('.cat-backdrop'),
+      x=document.querySelector('.cat-close');
+  function set(o){ box.classList.toggle('open',o); bd.classList.toggle('open',o); tog.setAttribute('aria-expanded',o); }
+  tog.addEventListener('click',function(){ set(true); });
+  x.addEventListener('click',function(){ set(false); });
+  bd.addEventListener('click',function(){ set(false); });
+  addEventListener('keydown',function(e){ if(e.key==='Escape') set(false); });
+})();
+</script>
 <script>
 (function(){
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
