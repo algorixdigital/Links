@@ -55,17 +55,15 @@
     padding:20px 18px 18px; border-radius:20px; margin-bottom:14px;
     background:linear-gradient(135deg,#FFD982,var(--gold) 55%,#FFAE2B);
     box-shadow:0 14px 36px rgba(255,194,75,.28), inset 0 1px 0 rgba(255,255,255,.6);
-    transition:transform .2s, box-shadow .2s;
-  }
-  .review:hover{transform:translateY(-3px); box-shadow:0 18px 42px rgba(255,194,75,.4), inset 0 1px 0 rgba(255,255,255,.6)}
-  .stars{display:flex; justify-content:center; gap:6px; margin-bottom:10px}
-  .stars svg{width:30px; height:30px; fill:var(--ink); opacity:.18; animation:light .5s forwards}
+    }
+  .stars{perspective:400px; display:flex; justify-content:center; gap:6px; margin-bottom:10px}
+  .stars svg{width:30px; height:30px; fill:var(--ink); opacity:.18; animation:light .7s forwards}
   .stars svg:nth-child(1){animation-delay:.3s}
   .stars svg:nth-child(2){animation-delay:.5s}
   .stars svg:nth-child(3){animation-delay:.7s}
   .stars svg:nth-child(4){animation-delay:.9s}
   .stars svg:nth-child(5){animation-delay:1.1s}
-  @keyframes light{to{opacity:1; transform:scale(1.08)}}
+  @keyframes light{0%{transform:rotateY(0)}to{opacity:1; transform:rotateY(360deg) scale(1.08)}}
   .review strong{display:block; font-size:18px; font-weight:800}
   .review span{display:block; font-size:13px; font-weight:600; opacity:.72; margin-top:2px}
 
@@ -77,9 +75,9 @@
     background:rgba(255,255,255,.06); border:1px solid var(--line);
     -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
     font-size:15px; font-weight:700;
-    transition:background .2s, border-color .2s, transform .2s;
+    transition:background .2s, border-color .2s;
   }
-  .link:hover{background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.28); transform:translateY(-2px)}
+  .link:hover{background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.28)}
   .icon{width:42px; height:42px; border-radius:12px; display:grid; place-items:center; flex-shrink:0}
   .icon svg{width:22px; height:22px; fill:#fff}
   .ig{background:linear-gradient(45deg,#F9A03F,#E1306C 50%,#7B3FE4)}
@@ -92,6 +90,48 @@
   .footer a{color:var(--blue); text-decoration:none; font-weight:700}
   .footer a:hover{text-decoration:underline}
 
+
+  /* ---------- 3D layer ---------- */
+  .container{position:relative; z-index:1; perspective:1100px}
+  .tilt{
+    position:relative; transform-style:preserve-3d; will-change:transform;
+    transition:transform .25s ease-out, box-shadow .25s;
+  }
+  .tilt.active{transition:transform .06s linear, box-shadow .25s}
+  .tilt > *{transform:translateZ(26px)}
+  .tilt::after{ /* moving light glare */
+    content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background:radial-gradient(circle at var(--gx,50%) var(--gy,0%), rgba(255,255,255,.28), transparent 55%);
+    opacity:0; transition:opacity .25s;
+  }
+  .tilt.active::after{opacity:1}
+  .link.tilt{box-shadow:0 10px 24px rgba(0,0,0,.28), 0 2px 0 rgba(255,255,255,.06) inset}
+  .link.tilt.active{box-shadow:0 22px 40px rgba(0,0,0,.45)}
+  .review.tilt.active{box-shadow:0 26px 54px rgba(255,194,75,.5), inset 0 1px 0 rgba(255,255,255,.6)}
+  .logo-wrap{width:112px; height:112px; margin:0 auto 20px; border-radius:50%}
+  .logo-wrap .logo{margin:0; width:100%; height:100%}
+  .logo-wrap.tilt > *{transform:translateZ(40px)}
+  .logo-wrap.tilt::after{display:none}
+
+  /* floating glass orbs with parallax */
+  .orbs{position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0}
+  .orb{
+    position:absolute; border-radius:50%;
+    background:radial-gradient(circle at 30% 28%, rgba(255,255,255,.55), var(--c) 38%, rgba(6,24,43,.9) 100%);
+    box-shadow:inset -10px -14px 30px rgba(0,0,0,.4), 0 20px 50px var(--c);
+    opacity:.55;
+    transform:translate3d(calc(var(--px,0)*var(--d)*1px), calc(var(--py,0)*var(--d)*1px), 0);
+    transition:transform .3s ease-out;
+  }
+  .orb i{display:block; width:100%; height:100%; border-radius:50%; animation:float var(--t) ease-in-out infinite alternate}
+  .o1{--c:#3D8BFF; --d:30;  --t:7s; width:130px; height:130px; left:-40px; top:8%}
+  .o2{--c:#FFC24B; --d:-45; --t:9s; width:80px;  height:80px;  right:6%;  top:22%}
+  .o3{--c:#3D8BFF; --d:60;  --t:8s; width:190px; height:190px; right:-70px; bottom:6%}
+  .o4{--c:#7B3FE4; --d:-25; --t:6s; width:60px;  height:60px;  left:10%;  bottom:14%}
+  @keyframes float{from{transform:translateY(-14px) scale(1)} to{transform:translateY(16px) scale(1.04)}}
+  @media (max-width:520px){.o1{width:90px;height:90px} .o3{width:130px;height:130px}}
+  @media (prefers-reduced-motion:reduce){.orb i{animation:none}}
+
   a:focus-visible{outline:3px solid var(--blue); outline-offset:3px}
   @media (max-width:360px){h1{font-size:26px} .link{padding:11px 12px; font-size:14px}}
   @media (prefers-reduced-motion:reduce){
@@ -101,17 +141,21 @@
 </style>
 </head>
 <body>
+<div class="orbs" aria-hidden="true">
+  <div class="orb o1"><i></i></div><div class="orb o2"><i></i></div>
+  <div class="orb o3"><i></i></div><div class="orb o4"><i></i></div>
+</div>
 <main class="container">
 
-  <div class="logo"><div class="logo-inner">
+  <div class="logo-wrap tilt" data-tilt="18"><div class="logo"><div class="logo-inner">
     <img src="./logo.png" alt="Algorix Digital logo" onerror="this.replaceWith(document.createTextNode('A'))">
-  </div></div>
+  </div></div></div>
 
   <h1>Algorix Digital</h1>
   <p class="subtitle">Thanks for connecting with us.<br>Choose an option below to get started.</p>
 
   <!-- GOOGLE REVIEWS: replace with your direct review URL -->
-  <a class="review" href="https://www.google.com/maps/place/Coffeemistry/" target="_blank" rel="noopener noreferrer">
+  <a class="review tilt" data-tilt="10" href="https://www.google.com/maps/place/Coffeemistry/" target="_blank" rel="noopener noreferrer">
     <div class="stars" aria-hidden="true">
       <svg viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
       <svg viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
@@ -126,21 +170,21 @@
   <nav class="links" aria-label="Social media and contact links">
 
     <!-- INSTAGRAM -->
-    <a class="link" href="https://www.instagram.com/algorixdigital/" target="_blank" rel="noopener noreferrer">
+    <a class="link tilt" data-tilt="8" href="https://www.instagram.com/algorixdigital/" target="_blank" rel="noopener noreferrer">
       <span class="icon ig"><svg viewBox="0 0 24 24"><path d="M12 7.2A4.8 4.8 0 1 0 12 16.8 4.8 4.8 0 0 0 12 7.2zm0 7.9A3.1 3.1 0 1 1 12 8.9a3.1 3.1 0 0 1 0 6.2zM17.3 6a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2zM12 2.5c-2.6 0-2.9 0-3.9.1-1 0-1.7.2-2.3.4-.6.2-1.1.6-1.7 1.100-.5.5-.9 1.100-1.100 1.700-.2.6-.4 1.300-.4 2.300-.1 1-.1 1.300-.1 3.900s0 2.900.1 3.900c0 1 .2 1.700.4 2.300.2.600.6 1.100 1.100 1.700.5.500 1.100.9 1.700 1.100.6.200 1.300.4 2.300.4 1 .1 1.300.1 3.900.1s2.900 0 3.900-.1c1 0 1.700-.2 2.300-.4.600-.2 1.100-.6 1.700-1.100.5-.5.9-1.100 1.100-1.700.2-.6.4-1.300.4-2.300.1-1 .1-1.300.1-3.900s0-2.900-.1-3.900c0-1-.2-1.700-.4-2.300a4.600 4.600 0 0 0-1.100-1.700 4.600 4.600 0 0 0-1.700-1.100c-.6-.2-1.300-.4-2.300-.4-1-.1-1.300-.1-3.900-.1zm0 1.700c2.500 0 2.800 0 3.800.1.900 0 1.400.2 1.800.3.400.2.700.4 1 .7.300.3.500.6.700 1 .1.400.3.900.3 1.800.1 1 .1 1.300.1 3.800s0 2.800-.1 3.800c0 .9-.2 1.400-.3 1.800-.2.400-.4.700-.7 1-.3.300-.6.500-1 .7-.4.100-.9.300-1.800.3-1 .1-1.300.1-3.800.1s-2.800 0-3.800-.1c-.9 0-1.400-.2-1.800-.3-.4-.2-.7-.4-1-.7-.3-.3-.5-.6-.7-1-.1-.4-.3-.9-.3-1.800-.1-1-.1-1.300-.1-3.800s0-2.800.1-3.800c0-.9.2-1.400.3-1.800.2-.4.4-.7.7-1 .3-.3.6-.5 1-.7.4-.1.9-.3 1.800-.3 1-.1 1.300-.1 3.800-.1z"/></svg></span>
       <span>Follow us on Instagram<small>@algorixdigital</small></span>
       <svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
     </a>
 
     <!-- WHATSAPP -->
-    <a class="link" href="https://wa.me/923001234567" target="_blank" rel="noopener noreferrer">
+    <a class="link tilt" data-tilt="8" href="https://wa.me/923001234567" target="_blank" rel="noopener noreferrer">
       <span class="icon wa"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.100L2 22l5-1.300A10 10 0 1 0 12 2zm0 18.200c-1.500 0-3-.4-4.200-1.200l-.3-.2-3 .8.8-2.900-.2-.3A8.200 8.200 0 1 1 12 20.200zm4.500-6.100c-.2-.1-1.500-.7-1.700-.8-.2-.1-.4-.1-.6.100-.2.200-.6.800-.8 1-.1.200-.3.200-.5.100-.7-.3-1.500-.7-2.200-1.300-.6-.5-1-1.200-1.200-1.400-.1-.2 0-.3.100-.5l.4-.4c.1-.1.100-.3.200-.4.100-.2 0-.3 0-.4l-.8-1.800c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.100-.7.300-.2.300-.9.900-.9 2.200s.9 2.500 1.100 2.700c.1.200 1.800 2.800 4.400 3.900 1.600.7 2.200.7 3 .6.500-.1 1.500-.6 1.700-1.200.2-.6.2-1.100.2-1.200-.1-.1-.2-.2-.5-.3z"/></svg></span>
       <span>Contact us on WhatsApp<small>Message us directly</small></span>
       <svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
     </a>
 
     <!-- FACEBOOK -->
-    <a class="link" href="https://www.facebook.com/profile.php?id=61594949199879" target="_blank" rel="noopener noreferrer">
+    <a class="link tilt" data-tilt="8" href="https://www.facebook.com/profile.php?id=61594949199879" target="_blank" rel="noopener noreferrer">
       <span class="icon fb"><svg viewBox="0 0 24 24"><path d="M13.500 22v-8.200h2.800l.4-3.300h-3.200V8.400c0-.9.300-1.600 1.600-1.600h1.700V3.900c-.3 0-1.300-.1-2.500-.1-2.500 0-4.200 1.500-4.200 4.300v2.400H7.300v3.300h2.800V22z"/></svg></span>
       <span>Follow us on Facebook<small>Updates and offers</small></span>
       <svg class="chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
@@ -154,5 +198,38 @@
   </p>
 
 </main>
+<script>
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce) return;
+  var root=document.body;
+
+  // 3D tilt + glare on pointer (mouse, pen or touch)
+  document.querySelectorAll('[data-tilt]').forEach(function(el){
+    var max=parseFloat(el.dataset.tilt)||10;
+    function move(e){
+      var r=el.getBoundingClientRect();
+      var x=(e.clientX-r.left)/r.width, y=(e.clientY-r.top)/r.height;
+      el.classList.add('active');
+      el.style.setProperty('--gx',x*100+'%'); el.style.setProperty('--gy',y*100+'%');
+      el.style.transform='perspective(800px) rotateX('+((0.5-y)*max*2)+'deg) rotateY('+((x-0.5)*max*2)+'deg) translateZ(14px)';
+    }
+    function leave(){ el.classList.remove('active'); el.style.transform=''; }
+    el.addEventListener('pointermove',move);
+    el.addEventListener('pointerdown',move);
+    el.addEventListener('pointerleave',leave);
+    el.addEventListener('pointerup',function(e){ if(e.pointerType!=='mouse') leave(); });
+    el.addEventListener('pointercancel',leave);
+  });
+
+  // background parallax (pointer on desktop, gyroscope on phones)
+  function par(x,y){ root.style.setProperty('--px',x.toFixed(3)); root.style.setProperty('--py',y.toFixed(3)); }
+  addEventListener('pointermove',function(e){ par(e.clientX/innerWidth-.5, e.clientY/innerHeight-.5); });
+  addEventListener('deviceorientation',function(e){
+    if(e.gamma==null) return;
+    par(Math.max(-1,Math.min(1,e.gamma/30))/2, Math.max(-1,Math.min(1,(e.beta-45)/30))/2);
+  });
+})();
+</script>
 </body>
 </html>
